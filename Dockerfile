@@ -17,6 +17,8 @@ WORKDIR /app
 
 COPY . .
 RUN composer install
+RUN npm install @rails/ujs
+RUN npm install
 RUN npm ci
 RUN npm run build
 
