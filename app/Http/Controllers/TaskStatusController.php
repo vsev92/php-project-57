@@ -71,7 +71,6 @@ class TaskStatusController extends Controller
 
         $stat->fill($data);
         $stat->save();
-        //dd(redirect()->route('task_statuses.index'));
         return redirect()->route('task_statuses.index');
     }
 
