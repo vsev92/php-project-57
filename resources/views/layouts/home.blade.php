@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="tGrnVLQFrCakn67O2r4kAY2T93Edk5YFr96xFDTB">
-    <meta name="csrf-param" content="_token" />
 
     <title>Менеджер задач</title>
 

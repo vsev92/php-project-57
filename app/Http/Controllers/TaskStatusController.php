@@ -22,7 +22,8 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        return view('statuses.create');
+        $taskStatus = new TaskStatus();
+        return view('statuses.create', compact('taskStatus'));
     }
 
     /**
@@ -53,7 +54,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        //
+        return view('statuses.edit', compact('taskStatus'));
     }
 
     /**
@@ -61,18 +62,17 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
+
         $stat = TaskStatus::findOrFail($taskStatus->id);
         $data = $request->validate([
-            // У обновления немного измененная валидация
-            // В проверку уникальности добавляется название поля и id текущего объекта
-            // Если этого не сделать, Laravel будет ругаться, что имя уже существует
+
             'name' => "required"
         ]);
 
         $stat->fill($data);
         $stat->save();
-        return redirect()
-            ->route('task_statuses.index');
+        //dd(redirect()->route('task_statuses.index'));
+        return redirect()->route('task_statuses.index');
     }
 
     /**
@@ -80,12 +80,9 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        /*$taskStatus = TaskStatus::find($id);
-        if ($article) {
-          $article->delete();
-        }*/
-        dd($taskStatus);
-        //$taskStatus->delete();
-        // return redirect()->route('articles.index');
+
+
+        $taskStatus->delete();
+        return redirect()->route('task_statuses.index');
     }
 }
