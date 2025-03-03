@@ -26,7 +26,6 @@
     </div>
     <div>
         <select class="rounded border-gray-300 w-1/3" name="status_id" id="status_id">
-            <option value selected="selected"></option>
             @foreach ($statuses as $taskStatus)
             <option value="{{$taskStatus->id}}"> {{$taskStatus->name}} </option>
             @endforeach
@@ -37,7 +36,6 @@
     </div>
     <div>
         <select class="rounded border-gray-300 w-1/3" name="assigned_to_id" id="assigned_to_id">
-            <option value selected="selected"></option>
             @foreach ($users as $user)
             <option value="{{$user->id}}"> {{$user->name}} </option>
             @endforeach

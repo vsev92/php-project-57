@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskStatusController extends Controller
@@ -77,11 +78,14 @@ class TaskStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskStatus $taskStatus)
+    public function destroy(TaskStatus $taskStatus, Request $request)
     {
 
-
-        $taskStatus->delete();
+        if (Task::where('status_id', $taskStatus->id)->count() > 0) {
+            $request->session()->flash('error', 'Не удалось удалить статус');
+        } else {
+            $taskStatus->delete();
+        }
         return redirect()->route('task_statuses.index');
     }
 }

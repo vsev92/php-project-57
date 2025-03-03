@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -36,18 +37,18 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         $data = $request->validate([
             'name' => 'required',
             'status_id' => 'required',
-            'created_by_id' => 'required'
+            'assigned_to_id' => 'required'
 
         ]);
-        dd($data);
+        $data['created_by_id'] =  Auth::id();
         $task = new Task();
         $task->fill($data);
         $task->save();
-        return redirect()->route('tasks.index');
+        return redirect()->route('task.index');
     }
 
     /**
@@ -55,7 +56,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('tasks.task', compact('task'));
+        return view('tasks.show', compact('task'));
     }
 
     /**
@@ -73,17 +74,21 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $task = TaskStatus::findOrFail($task->id);
+
+
+        $newTask = Task::findOrFail($task->id);
         $data = $request->validate([
 
             'name' => 'required',
             'status_id' => 'required',
-            'created_by_id' => 'required'
+            'assigned_to_id' => 'required',
+            'description' => 'max:1000'
         ]);
+        // dd($data);
+        $newTask->fill($data);
+        $newTask->save();
 
-        $task->fill($data);
-        $task->save();
-        return redirect()->route('tasks.index');
+        return redirect()->route('task.index');
     }
 
     /**
@@ -92,6 +97,6 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
-        return redirect()->route('tasks.index');
+        return redirect()->route('task.index');
     }
 }

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+
+    protected $fillable = ['status_id', 'name', 'description', 'created_by_id', 'assigned_to_id'];
+
     public function created_by()
     {
         return $this->belongsTo('App\Models\User');
@@ -18,6 +21,6 @@ class Task extends Model
 
     public function status()
     {
-        return $this->belongsTo('App\Models\taskStatus');
+        return $this->belongsTo('App\Models\TaskStatus');
     }
 }

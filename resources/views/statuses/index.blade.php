@@ -1,7 +1,16 @@
 @extends('layouts.home')
 @section('content')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+@if(session('success'))
+<div class="alert alert-success">
+    {!! session('success') !!}
+</div>
+@endif
+@if(session('error'))
+<div class="alert alert-danger">
+    {!! session('error') !!}
+</div>
+@endif
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="csrf-param" content="_token">
 

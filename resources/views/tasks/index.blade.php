@@ -62,12 +62,13 @@
                 <td>{{$task->status->name}}</td>
                 <td>
                     <a class="text-blue-600 hover:text-blue-900" href="{{route('task.show', $task->id)}}">
-                        {{$task->description}}
+                        {{$task->name}}
                     </a>
                 </td>
-                <td>{{$task->created_by()->name}}</td>
-                <td>{{$task->assigned_by()->name}}</td>
+                <td>{{$task->created_by->name}}</td>
+                <td>{{$task->assigned_to->name}}</td>
                 <td>{{$task->updated_at}}</td>
+
                 <td>
                     <a href="{{route('task.edit', $task->id)}}" class="text-blue-600 hover:text-blue-900">
                         Изменить </a>
