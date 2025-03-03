@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Label;
 
 class Task extends Model
 {
@@ -22,5 +23,10 @@ class Task extends Model
     public function status()
     {
         return $this->belongsTo('App\Models\TaskStatus');
+    }
+
+    public function labels()
+    {
+        return $this->belongsToMany(Label::class);
     }
 }

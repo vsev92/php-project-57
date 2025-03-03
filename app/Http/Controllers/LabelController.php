@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TaskStatus;
-use App\Models\Task;
+use App\Models\Label;
 use Illuminate\Http\Request;
 
-class TaskStatusController extends Controller
+class LabelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $statuses = TaskStatus::paginate();
-
-        return view('statuses.index', compact('statuses'));
+        $labels = Label::paginate();
+        return view('labels.index', compact('labels'));
     }
 
     /**
@@ -23,8 +21,8 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        $taskStatus = new TaskStatus();
-        return view('statuses.create', compact('taskStatus'));
+        $label = new Label();
+        return view('labels.create', compact('label'));
     }
 
     /**
@@ -33,19 +31,19 @@ class TaskStatusController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required'
-
+            'name' => 'required',
+            'description' => 'required'
         ]);
-        $status = new TaskStatus();
-        $status->fill($data);
-        $status->save();
-        return redirect()->route('task_statuses.index');
+        $label = new Label();
+        $label->fill($data);
+        $label->save();
+        return redirect()->route('labels.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TaskStatus $taskStatus)
+    public function show(Label $label)
     {
         //
     }
@@ -53,34 +51,32 @@ class TaskStatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TaskStatus $taskStatus)
+    public function edit(Label $label)
     {
-        return view('statuses.edit', compact('taskStatus'));
+        return view('labels.edit', compact('label'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TaskStatus $taskStatus)
+    public function update(Request $request, Label $label)
     {
-
-        $newStatus = TaskStatus::findOrFail($taskStatus->id);
+        $label = Label::findOrFail($label->id);
         $data = $request->validate([
 
-            'name' => "required"
+            'name' => "required",
+            'description' => "required"
         ]);
-
-        $newStatus->fill($data);
-        $newStatus->save();
-        return redirect()->route('task_statuses.index');
+        $label->fill($data);
+        $label->save();
+        return redirect()->route('labels.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskStatus $taskStatus, Request $request)
+    public function destroy(Label $label)
     {
-
         if (Task::where('status_id', $taskStatus->id)->count() > 0) {
             $request->session()->flash('error', 'Не удалось удалить статус');
         } else {
