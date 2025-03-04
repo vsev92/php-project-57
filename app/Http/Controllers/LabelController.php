@@ -75,13 +75,13 @@ class LabelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Label $label)
+    public function destroy(Label $label, Request $request)
     {
-        if (Task::where('status_id', $taskStatus->id)->count() > 0) {
-            $request->session()->flash('error', 'Не удалось удалить статус');
+        if (!empty($label->tasks->all())) {
+            $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
-            $taskStatus->delete();
+            $label->delete();
         }
-        return redirect()->route('task_statuses.index');
+        return redirect()->route('labels.index');
     }
 }

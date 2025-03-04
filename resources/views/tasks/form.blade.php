@@ -46,10 +46,9 @@
     </div>
     <div>
         <select class="rounded border-gray-300 w-1/3 h-32" name="labels[]" id="labels[]" multiple>
-            <option value="1">ошибка</option>
-            <option value="2">документация</option>
-            <option value="3">дубликат</option>
-            <option value="4">доработка</option>
+            @foreach ($labels as $label)
+            <option value="{{$label->id}}"> {{$label->name}} </option>
+            @endforeach
         </select>
     </div>
 </div>

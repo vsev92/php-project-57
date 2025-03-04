@@ -81,7 +81,7 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
 
-        if (Task::where('status_id', $taskStatus->id)->count() > 0) {
+        if (!empty($taskStatus->tasks->all())) {
             $request->session()->flash('error', 'Не удалось удалить статус');
         } else {
             $taskStatus->delete();

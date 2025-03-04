@@ -4,10 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-param" content="_token">
     <!-- CSRF Token -->
 
     <title>Менеджер задач</title>
+
+    <!-- Scripts -->
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Scripts -->
     <link rel="preload" as="style" href="https://php-task-manager-ru.hexlet.app/build/assets/app.4885a691.css" />
@@ -17,6 +22,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
 </head>
 
 <body>
@@ -29,12 +35,23 @@
                     </a>
 
                     <div class="flex items-center lg:order-2">
+                        @auth
+                        <a
+                            data-method="post"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            rel="nofollow"
+                            href="{{route('logout')}}">
+                            Выход
+                        </a>
+                        @endauth
+                        @guest
                         <a href="{{route('login')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Вход
                         </a>
                         <a href="{{route('register')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
                             Регистрация
                         </a>
+                        @endguest
                     </div>
 
                     <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
