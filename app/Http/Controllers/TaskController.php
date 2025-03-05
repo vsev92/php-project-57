@@ -9,6 +9,7 @@ use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -20,11 +21,9 @@ class TaskController extends Controller
         $statuses = TaskStatus::all();
         $users = User::all();
 
-
-        $filtersCollection = collect($request->filter ?? []);
-        $filters = $filtersCollection->filter(fn($value, $key) => isset($value))->keys()->all();
-        $tasks = QueryBuilder::for(Task::class)->allowedFilters($filters);
-        $tasks = $tasks->paginate(4);
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([AllowedFilter::exact('status_id'), AllowedFilter::exact('created_by_id'), AllowedFilter::exact('assigned_to_id')])
+            ->paginate(4);
 
         return view('tasks.index', compact('statuses', 'users', 'tasks'));
     }
