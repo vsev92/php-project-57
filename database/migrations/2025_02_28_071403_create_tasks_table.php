@@ -25,7 +25,7 @@ return new class extends Migration
 
 
 
-            $table->integer('assigned_to_id')->nullable; //необязательное. Связано с сущностью пользователя. Тот на кого поставлена задача
+            $table->integer('assigned_to_id')->nullable(); //необязательное. Связано с сущностью пользователя. Тот на кого поставлена задача
             $table->foreign('assigned_to_id')->references('id')->on('users');
             $table->timestamps();
         });
