@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Label;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LabelController extends Controller
 {
@@ -30,13 +31,14 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'description' => 'required'
-        ]);
-        $label = new Label();
-        $label->fill($data);
-        $label->save();
+        if (Auth::user() !== null) {
+            $data = $request->validate([
+                'name' => 'required'
+            ]);
+            $label = new Label();
+            $label->fill($data);
+            $label->save();
+        }
         return redirect()->route('labels.index');
     }
 
@@ -61,14 +63,14 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        $label = Label::findOrFail($label->id);
-        $data = $request->validate([
-
-            'name' => "required",
-            'description' => "required"
-        ]);
-        $label->fill($data);
-        $label->save();
+        if (Auth::user() !== null) {
+            $label = Label::findOrFail($label->id);
+            $data = $request->validate([
+                'name' => "required",
+            ]);
+            $label->fill($data);
+            $label->save();
+        }
         return redirect()->route('labels.index');
     }
 
@@ -77,7 +79,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label, Request $request)
     {
-        if (!empty($label->tasks->all())) {
+        if (is_null(Auth::user()) || !empty($label->tasks->all())) {
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
             $label->delete();
