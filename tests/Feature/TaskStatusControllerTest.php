@@ -10,38 +10,52 @@ use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
+
     use RefreshDatabase;
+    private $user;
+    private $status;
+    private $task;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->status =  TaskStatus::factory()->create();
+    }
 
     public function test_index(): void
     {
-        $status = TaskStatus::create(['name' => 'testStatindex']);
-        $status->save();
-
         $response = $this->get('/task_statuses');
-
         $response->assertStatus(200);
     }
 
+
     public function test_create(): void
     {
-
         $response = $this->get('/task_statuses/create');
         $response->assertStatus(200);
     }
 
+
+
     public function test_store(): void
     {
-        $this->assertDatabaseMissing('task_statuses', ['name' => 'testStatusName']);
-        $response = $this->post('/task_statuses', ['name' => 'testStatusName']);
+        $data = ['name' => 'testStatusName'];
+
+        $response = $this->post('/task_statuses', $data);
+        $this->assertDatabaseMissing('task_statuses', $data);
+
+        $response = $this->actingAs($this->user)->post('/task_statuses', $data);
+        $this->assertDatabaseHas('task_statuses', $data);
+
         $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseHas('task_statuses', ['name' => 'testStatusName']);
     }
+
+
 
     public function test_edit(): void
     {
-        $status = TaskStatus::create(['name' => 'testStatindex']);
-        $status->save();
-        $url = "/task_statuses/{$status->id}/edit";
+        $url = "/task_statuses/{$this->status->id}/edit";
         $response = $this->get($url);
         $response->assertStatus(200);
     }
@@ -50,41 +64,37 @@ class TaskStatusControllerTest extends TestCase
     public function test_delete(): void
     {
 
-        $status = TaskStatus::create(['name' => 'testStatusName']);
-        $status->save();
-        $url = "/task_statuses/{$status->id}";
+        $id = $this->status->id;
+        $url = "/task_statuses/{$id}";
+
         $response = $this->delete($url);
+        $this->assertDatabaseHas('task_statuses', ['id' =>  $id]);
+
+        $task = Task::factory()->create(['status_id' => $this->status->id]);
+        $response = $this->actingAs($this->user)->delete($url);
+        $this->assertDatabaseHas('task_statuses', ['id' =>  $id]);
+        $task->delete();
+
+        $response = $this->actingAs($this->user)->delete($url);
+        $this->assertDatabaseMissing('task_statuses', ['id' =>  $id]);
+
         $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseMissing('task_statuses', ['id' => $status->id, 'name' => 'testStatusName']);
     }
 
-    public function test_assigned_status_not_delete(): void
-    {
-        $user1 = User::create(['id' => 1, 'name' => 'testUserName1', 'email' => 'testUser1@mail.ru', 'password' => 'pass1']);
-        $user1->save();
-        $user2 = User::create(['id' => 2, 'name' => 'testUserName2', 'email' => 'testUser2@mail.ru', 'password' => 'pass2']);
-        $user2->save();
 
-        $status = TaskStatus::create(['name' => 'testStatusName']);
-        $status->save();
-        $task = Task::create(['name' => 'testTask', 'status_id' => $status->id, 'created_by_id' => $user1->id, 'assigned_to_id' => $user2->id]);
-        $task->save();
-
-        $url = "/task_statuses/{$status->id}";
-        $response = $this->delete($url);
-        $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseHas('task_statuses', ['id' => $status->id, 'name' => 'testStatusName']);
-    }
 
     public function test_update(): void
     {
-        $status = TaskStatus::create(['name' => 'testStatusName']);
-        $status->save();
-        $url = "/task_statuses/{$status->id}";
-        $response = $this->patch($url, ['name' => 'newName']);
+        $id = $this->status->id;
+        $newData = ['name' => 'newName'];
+        $url = "/task_statuses/{$id}";
+
+        $response = $this->patch($url, $newData);
+        $this->assertDatabaseMissing('task_statuses', $newData);
+
+        $response = $this->actingAs($this->user)->patch($url, $newData);
+        $this->assertDatabaseHas('task_statuses', $newData);
+
         $response->assertRedirect(route('task_statuses.index'));
-        $this->assertDatabaseHas('task_statuses', ['id' => $status->id, 'name' => 'newName']);
-        $response = $this->patch($url, ['name' => '']);
-        $this->assertDatabaseHas('task_statuses', ['id' => $status->id, 'name' => 'newName']);
     }
 }

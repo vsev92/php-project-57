@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -45,21 +46,22 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $data = $request->validate([
-            'name' => 'required',
-            'status_id' => 'required',
-            'assigned_to_id' => 'required'
+        if (Auth::user() !== null) {
+            $data = $request->validate([
+                'name' => 'required',
+                'status_id' => 'required',
 
-        ]);
-        $data['created_by_id'] =  Auth::id();
-        $task = new Task();
-        $task->fill($data);
-        $labels = $request->labels;
-        $task->save();
-        $task->labels()->attach($labels);
-        $task->save();
-        return redirect()->route('task.index');
+            ]);
+            $data['created_by_id'] =  Auth::id();
+            $data['assigned_to_id'] =  $request?->assigned_to_id;
+            $task = new Task();
+            $task->fill($data);
+            $labels = $request->labels;
+            $task->save();
+            $task->labels()->attach($labels);
+            $task->save();
+        }
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -86,22 +88,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+        if (Auth::user() !== null) {
+            $newTask = Task::findOrFail($task->id);
+            $data = $request->validate([
 
-
-        $newTask = Task::findOrFail($task->id);
-        $data = $request->validate([
-
-            'name' => 'required',
-            'status_id' => 'required',
-            'assigned_to_id' => 'required',
-            'description' => 'max:1000'
-        ]);
-        $newTask->fill($data);
-        $labels = $request->labels;
-        $newTask->labels()->detach();
-        $newTask->labels()->attach($labels);
-        $newTask->save();
-        return redirect()->route('task.index');
+                'name' => 'required',
+                'status_id' => 'required',
+            ]);
+            $newTask->fill($data);
+            $labels = $request->labels;
+            $newTask->labels()->detach();
+            $newTask->labels()->attach($labels);
+            $newTask->save();
+        }
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -109,7 +109,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $task->delete();
-        return redirect()->route('task.index');
+        if (Gate::allows('delete-task', $task)) {
+            $task->delete();
+        }
+        return redirect()->route('tasks.index');
     }
 }

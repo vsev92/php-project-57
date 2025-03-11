@@ -4,7 +4,7 @@
     <div class="grid col-span-full">
         <h1 class="mb-5">Изменение задачи</h1>
 
-        {{ html()->modelForm($task, 'PATCH', route('task.update', $task->id))->open() }}
+        {{ html()->modelForm($task, 'PATCH', route('tasks.update', $task->id))->open() }}
         @include('tasks.form')
         <div class="flex flex-col">
             <div class="mt-2">

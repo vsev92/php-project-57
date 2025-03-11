@@ -14,7 +14,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('task', TaskController::class);
+Route::resource('tasks', TaskController::class);
 Route::resource('task_statuses', TaskStatusController::class);
 Route::resource('labels', LabelController::class);
 

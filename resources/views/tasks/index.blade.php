@@ -12,7 +12,7 @@
 
             <div class="w-full flex items-center">
                 <div>
-                    <form method="GET" action="{{route('task.index')}}">
+                    <form method="GET" action="{{route('tasks.index')}}">
                         <div class="flex">
                             <select class="rounded border-gray-300" name="filter[status_id]" id="filter[status_id]">
                                 <option value selected="selected">Статус</option>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="ml-auto">
-                <a href="{{route('task.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                <a href="{{route('tasks.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
                     Создать задачу </a>
             </div>
         </div>
@@ -61,7 +61,7 @@
                 <td>{{$task->id}}</td>
                 <td>{{$task->status->name}}</td>
                 <td>
-                    <a class="text-blue-600 hover:text-blue-900" href="{{route('task.show', $task->id)}}">
+                    <a class="text-blue-600 hover:text-blue-900" href="{{route('tasks.show', $task->id)}}">
                         {{$task->name}}
                     </a>
                 </td>
@@ -70,7 +70,7 @@
                 <td>{{$task->updated_at}}</td>
 
                 <td>
-                    <a href="{{route('task.edit', $task->id)}}" class="text-blue-600 hover:text-blue-900">
+                    <a href="{{route('tasks.edit', $task->id)}}" class="text-blue-600 hover:text-blue-900">
                         Изменить </a>
                 </td>
             </tr>

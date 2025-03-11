@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskStatusController extends Controller
 {
@@ -31,13 +32,15 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required'
+        if (Auth::user() !== null) {
+            $data = $request->validate([
+                'name' => 'required'
 
-        ]);
-        $status = new TaskStatus();
-        $status->fill($data);
-        $status->save();
+            ]);
+            $status = new TaskStatus();
+            $status->fill($data);
+            $status->save();
+        }
         return redirect()->route('task_statuses.index');
     }
 
@@ -62,15 +65,16 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
+        if (Auth::user() !== null) {
+            $newStatus = TaskStatus::findOrFail($taskStatus->id);
+            $data = $request->validate([
 
-        $newStatus = TaskStatus::findOrFail($taskStatus->id);
-        $data = $request->validate([
+                'name' => "required"
+            ]);
 
-            'name' => "required"
-        ]);
-
-        $newStatus->fill($data);
-        $newStatus->save();
+            $newStatus->fill($data);
+            $newStatus->save();
+        }
         return redirect()->route('task_statuses.index');
     }
 
@@ -80,7 +84,7 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
 
-        if (!empty($taskStatus->tasks->all())) {
+        if (is_null(Auth::user()) || !empty($taskStatus->tasks->all())) {
             $request->session()->flash('error', 'Не удалось удалить статус');
         } else {
             $taskStatus->delete();
