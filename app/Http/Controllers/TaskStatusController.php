@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
-use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TaskStatusController extends Controller
 {
@@ -32,7 +31,7 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user() !== null) {
+        if (Gate::allows('store-taskStatus')) {
             $data = $request->validate([
                 'name' => 'required'
 
@@ -65,7 +64,7 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        if (Auth::user() !== null) {
+        if (Gate::allows('update-taskStatus')) {
             $newStatus = TaskStatus::findOrFail($taskStatus->id);
             $data = $request->validate([
 
@@ -83,8 +82,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
-
-        if (is_null(Auth::user()) || !empty($taskStatus->tasks->all())) {
+        if (!Gate::allows('store-taskStatus') || !empty($taskStatus->tasks->all())) {
             $request->session()->flash('error', 'Не удалось удалить статус');
         } else {
             $taskStatus->delete();

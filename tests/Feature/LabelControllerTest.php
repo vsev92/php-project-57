@@ -8,8 +8,6 @@ use App\Models\Task;
 use App\Models\Label;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 
 class LabelControllerTest extends TestCase

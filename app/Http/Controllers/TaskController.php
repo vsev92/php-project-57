@@ -46,7 +46,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user() !== null) {
+        if (Gate::allows('store-task')) {
             $data = $request->validate([
                 'name' => 'required',
                 'status_id' => 'required',
@@ -88,7 +88,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        if (Auth::user() !== null) {
+        if (Gate::allows('update-task')) {
             $newTask = Task::findOrFail($task->id);
             $data = $request->validate([
 

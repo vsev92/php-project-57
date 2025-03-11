@@ -6,9 +6,11 @@
         {{ html()->modelForm($taskStatus, 'POST', route('task_statuses.store'))->open() }}
         @include('statuses.form')
         <div class="flex flex-col">
+            @can('store-taskStatus')
             <div class="mt-2">
                 {{ html()->submit('Создать')->class(['bg-blue-500', 'hover:bg-blue-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded' => true]) }}
             </div>
+            @endcan
         </div>
         {{ html()->closeModelForm() }}
     </div>

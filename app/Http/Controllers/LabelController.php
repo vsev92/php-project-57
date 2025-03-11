@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Label;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class LabelController extends Controller
 {
@@ -31,7 +31,7 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user() !== null) {
+        if (Gate::allows('store-label')) {
             $data = $request->validate([
                 'name' => 'required'
             ]);
@@ -63,7 +63,7 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        if (Auth::user() !== null) {
+        if (Gate::allows('update-label')) {
             $label = Label::findOrFail($label->id);
             $data = $request->validate([
                 'name' => "required",
@@ -79,7 +79,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label, Request $request)
     {
-        if (is_null(Auth::user()) || !empty($label->tasks->all())) {
+        if (!Gate::allows('delete-label')  || !empty($label->tasks->all())) {
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
             $label->delete();

@@ -7,9 +7,11 @@
         {{ html()->modelForm($label, 'PATCH', route('labels.update', $label->id))->open() }}
         @include('labels.form')
         <div class="flex flex-col">
+            @can('update-label')
             <div class="mt-2">
                 {{ html()->submit('Обновить')->class(['bg-blue-500', 'hover:bg-blue-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded' => true]) }}
             </div>
+            @endcan
         </div>
         {{ html()->closeModelForm() }}
     </div>

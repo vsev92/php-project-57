@@ -36,11 +36,12 @@
                     </form>
                 </div>
             </div>
-
+            @can('store-task')
             <div class="ml-auto">
                 <a href="{{route('tasks.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
                     Создать задачу </a>
             </div>
+            @endcan
         </div>
 
         <table class="mt-4">
@@ -70,8 +71,14 @@
                 <td>{{$task->updated_at}}</td>
 
                 <td>
+                    @can('delete-task', $task)
+                    <a data-confirm="Вы уверены?" data-method="delete" href="{{route('tasks.destroy', $task->id)}}" class="text-red-600 hover:text-red-900">
+                        Удалить </a>
+                    @endcan
+                    @can('update-task', $task)
                     <a href="{{route('tasks.edit', $task->id)}}" class="text-blue-600 hover:text-blue-900">
                         Изменить </a>
+                    @endcan
                 </td>
             </tr>
             @endforeach
