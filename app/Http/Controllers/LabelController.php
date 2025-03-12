@@ -38,6 +38,7 @@ class LabelController extends Controller
             $label = new Label();
             $label->fill($data);
             $label->save();
+            flash('Метка успешно создана')->success();
         }
         return redirect()->route('labels.index');
     }
@@ -70,6 +71,7 @@ class LabelController extends Controller
             ]);
             $label->fill($data);
             $label->save();
+            flash('Метка успешно изменена')->success();
         }
         return redirect()->route('labels.index');
     }
@@ -83,6 +85,7 @@ class LabelController extends Controller
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
             $label->delete();
+            flash('Метка успешно удалена')->successs();
         }
         return redirect()->route('labels.index');
     }

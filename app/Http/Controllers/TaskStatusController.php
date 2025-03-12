@@ -39,6 +39,7 @@ class TaskStatusController extends Controller
             $status = new TaskStatus();
             $status->fill($data);
             $status->save();
+            flash('Статус успешно создан')->success();
         }
         return redirect()->route('task_statuses.index');
     }
@@ -73,6 +74,7 @@ class TaskStatusController extends Controller
 
             $newStatus->fill($data);
             $newStatus->save();
+            flash('Статус успешно изменён')->success();
         }
         return redirect()->route('task_statuses.index');
     }
@@ -83,9 +85,10 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
         if (!Gate::allows('store-taskStatus') || !empty($taskStatus->tasks->all())) {
-            $request->session()->flash('error', 'Не удалось удалить статус');
+            flash('Не удалось удалить статус')->error();
         } else {
             $taskStatus->delete();
+            flash('Статус успешно удалён')->success();
         }
         return redirect()->route('task_statuses.index');
     }

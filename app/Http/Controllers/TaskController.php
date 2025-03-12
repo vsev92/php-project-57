@@ -60,6 +60,7 @@ class TaskController extends Controller
             $task->save();
             $task->labels()->attach($labels);
             $task->save();
+            flash('Задача успешно создана')->success();
         }
         return redirect()->route('tasks.index');
     }
@@ -100,6 +101,7 @@ class TaskController extends Controller
             $newTask->labels()->detach();
             $newTask->labels()->attach($labels);
             $newTask->save();
+            flash('Задача успешно изменена')->success();
         }
         return redirect()->route('tasks.index');
     }
@@ -111,6 +113,7 @@ class TaskController extends Controller
     {
         if (Gate::allows('delete-task', $task)) {
             $task->delete();
+            flash('Задача успешно удалена')->success();
         }
         return redirect()->route('tasks.index');
     }
