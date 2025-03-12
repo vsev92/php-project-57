@@ -2,7 +2,7 @@
 @section('content')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @if(session('success'))
-<div class="alert alert-success" role="alert">
+<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" role="alert">
     {!! session('success') !!}
 </div>
 @endif
