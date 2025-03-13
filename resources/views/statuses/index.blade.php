@@ -1,21 +1,8 @@
 @extends('layouts.home')
 @section('content')
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-@if(session('success'))
-<div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" role="alert">
-    {!! session('success') !!}
-</div>
-@endif
-@if(session('error'))
-<div class="alert alert-danger" role="alert">
-    {!! session('error') !!}
-</div>
-@endif
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="csrf-param" content="_token">
-
 <section class="bg-white dark:bg-gray-900">
     <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
+        @include('flash::message')
         <div class="grid col-span-full">
             <h1 class="mb-5">Статусы</h1>
             @can('store-taskStatus')
@@ -39,14 +26,6 @@
                     <td>{{$status->name}}</td>
                     <td>{{$status->updated_at}}</td>
                     <td>
-                        @can('update-taskStatus')
-                        <a
-                            class="text-blue-600 hover:text-blue-900"
-                            href="{{route('task_statuses.edit', ['task_status'=>$status->id])}}">
-                            Изменить
-
-                        </a>
-                        @endcan
                         @can('delete-taskStatus')
                         <a
                             data-confirm="Вы уверены?"
@@ -57,6 +36,15 @@
                             Удалить
                         </a>
                         @endcan
+                        @can('update-taskStatus')
+                        <a
+                            class="text-blue-600 hover:text-blue-900"
+                            href="{{route('task_statuses.edit', ['task_status'=>$status->id])}}">
+                            Изменить
+
+                        </a>
+                        @endcan
+
                     </td>
                 </tr>
                 @endforeach

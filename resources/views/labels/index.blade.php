@@ -1,21 +1,9 @@
 @extends('layouts.home')
 @section('content')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@if(session('success'))
-<div class="alert alert-success">
-    {!! session('success') !!}
-</div>
-@endif
-@if(session('error'))
-<div class="alert alert-danger">
-    {!! session('error') !!}
-</div>
-@endif
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="csrf-param" content="_token">
-
 <section class="bg-white dark:bg-gray-900">
     <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
+        @include('flash::message')
         <div class="grid col-span-full">
             <h1 class="mb-5">Метки</h1>
             @can('store-label')
