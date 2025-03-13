@@ -12,14 +12,14 @@ class Task extends Model
 
     protected $fillable = ['status_id', 'name', 'description', 'created_by_id', 'assigned_to_id'];
 
-    public function created_by()
+    public function creator()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'created_by_id');
     }
 
-    public function assigned_to()
+    public function executor()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'assigned_to_id');
     }
 
     public function status()

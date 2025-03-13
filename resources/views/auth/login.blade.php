@@ -5,13 +5,13 @@
         <a href="#">Менеджер задач </a>
     </h2>
 
-
+    <ol>
+        <li>
+            <x-input-error :messages="$errors->first()" class="mt-2" />
+        </li>
+    </ol>
     <form method="POST" action="{{route('login')}}">
         @csrf
-
-
-
-
         <div>
             <label class="block font-medium text-sm text-gray-700" for="email">
                 Email
