@@ -33,7 +33,7 @@ class TaskStatusController extends Controller
     {
         if (Gate::allows('store-taskStatus')) {
             $data = $request->validate([
-                'name' => 'required'
+                'name' => 'required|unique:task_statuses,name'
 
             ]);
             $status = new TaskStatus();
