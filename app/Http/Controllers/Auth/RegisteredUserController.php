@@ -44,7 +44,6 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-        flash("Привет, {$user}")->success();
 
         return redirect(route('home', absolute: false));
     }
@@ -61,7 +60,6 @@ class RegisteredUserController extends Controller
 
             'name.required' => 'A title is required',
 
-            'password.min'  => 'blaaaah',
 
         ];
     }
