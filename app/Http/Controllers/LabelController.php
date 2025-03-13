@@ -85,7 +85,7 @@ class LabelController extends Controller
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
             $label->delete();
-            flash('Метка успешно удалена')->successs();
+            flash('Метка успешно удалена')->success();
         }
         return redirect()->route('labels.index');
     }
