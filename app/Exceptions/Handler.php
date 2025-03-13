@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class  Handler
+class Handler
 {
     public function register(): void
     {

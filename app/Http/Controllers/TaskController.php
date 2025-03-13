@@ -23,7 +23,11 @@ class TaskController extends Controller
         $users = User::all();
 
         $tasks = QueryBuilder::for(Task::class)
-            ->allowedFilters([AllowedFilter::exact('status_id'), AllowedFilter::exact('created_by_id'), AllowedFilter::exact('assigned_to_id')])
+            ->allowedFilters([
+                AllowedFilter::exact('status_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('assigned_to_id')
+            ])
             ->paginate(4);
 
         return view('tasks.index', compact('statuses', 'users', 'tasks'));

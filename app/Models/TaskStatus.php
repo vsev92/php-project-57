@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TaskStatus extends Model
 {
-
     use HasFactory;
+
     protected $fillable = ['id', 'name'];
 
     public function tasks()
