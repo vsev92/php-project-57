@@ -8,7 +8,6 @@ use App\Models\Label;
 
 class Task extends Model
 {
-
     use HasFactory;
 
     protected $fillable = ['status_id', 'name', 'description', 'created_by_id', 'assigned_to_id'];

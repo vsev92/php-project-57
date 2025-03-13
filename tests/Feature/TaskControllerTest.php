@@ -7,13 +7,11 @@ use App\Models\TaskStatus;
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-
 
 class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     private $user;
     private $status;
     private $task;
@@ -26,20 +24,20 @@ class TaskControllerTest extends TestCase
         $this->task = Task::factory()->create();
     }
 
-    public function test_index(): void
+    public function testIndex(): void
     {
         $response = $this->get('/tasks');
         $response->assertStatus(200);
     }
 
 
-    public function test_create(): void
+    public function testCreate(): void
     {
         $response = $this->get('/tasks/create');
         $response->assertStatus(200);
     }
 
-    public function test_store(): void
+    public function testStore(): void
     {
 
 
@@ -57,7 +55,7 @@ class TaskControllerTest extends TestCase
         $response->assertRedirect(route('tasks.index'));
     }
 
-    public function test_edit(): void
+    public function testEdit(): void
     {
 
         $url = "/tasks/{$this->task->id}/edit";
@@ -66,7 +64,7 @@ class TaskControllerTest extends TestCase
     }
 
 
-    public function test_delete(): void
+    public function testDelete(): void
     {
         $id = $this->task->id;
         $url = "/tasks/{$id}";
@@ -88,7 +86,7 @@ class TaskControllerTest extends TestCase
 
 
 
-    public function test_update(): void
+    public function testUpdate(): void
     {
 
         $newStatus = TaskStatus::factory()->create();

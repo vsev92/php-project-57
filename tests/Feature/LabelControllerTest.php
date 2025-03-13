@@ -9,10 +9,10 @@ use App\Models\Label;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class LabelControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     private $user;
     private $status;
     private $task;
@@ -27,20 +27,20 @@ class LabelControllerTest extends TestCase
         $this->label = Label::factory()->create();
     }
 
-    public function test_index(): void
+    public function testIndex(): void
     {
         $response = $this->get('/labels');
         $response->assertStatus(200);
     }
 
 
-    public function test_create(): void
+    public function testCreate(): void
     {
         $response = $this->get('/labels/create');
         $response->assertStatus(200);
     }
 
-    public function test_store(): void
+    public function testStore(): void
     {
         $data = [
             'name' => 'testName'
@@ -54,7 +54,7 @@ class LabelControllerTest extends TestCase
         $response->assertRedirect(route('labels.index'));
     }
 
-    public function test_edit(): void
+    public function testEdit(): void
     {
 
         $url = "/labels/{$this->label->id}/edit";
@@ -63,7 +63,7 @@ class LabelControllerTest extends TestCase
     }
 
 
-    public function test_delete(): void
+    public function testDelete(): void
     {
         $id = $this->label->id;
         $url = "/labels/{$id}";
@@ -85,7 +85,7 @@ class LabelControllerTest extends TestCase
 
 
 
-    public function test_update(): void
+    public function testUpdate(): void
     {
 
         $id = $this->label->id;

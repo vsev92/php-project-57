@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Task;
 
-
 class AppServiceProvider extends ServiceProvider
 {
     /**

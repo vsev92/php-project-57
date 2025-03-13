@@ -10,8 +10,8 @@ use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
-
     use RefreshDatabase;
+
     private $user;
     private $status;
     private $task;
@@ -23,14 +23,14 @@ class TaskStatusControllerTest extends TestCase
         $this->status =  TaskStatus::factory()->create();
     }
 
-    public function test_index(): void
+    public function testIndex(): void
     {
         $response = $this->get('/task_statuses');
         $response->assertStatus(200);
     }
 
 
-    public function test_create(): void
+    public function testCreate(): void
     {
         $response = $this->get('/task_statuses/create');
         $response->assertStatus(200);
@@ -38,7 +38,7 @@ class TaskStatusControllerTest extends TestCase
 
 
 
-    public function test_store(): void
+    public function testStore(): void
     {
         $data = ['name' => 'testStatusName'];
 
@@ -53,7 +53,7 @@ class TaskStatusControllerTest extends TestCase
 
 
 
-    public function test_edit(): void
+    public function testEdit(): void
     {
         $url = "/task_statuses/{$this->status->id}/edit";
         $response = $this->get($url);
@@ -61,7 +61,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
 
-    public function test_delete(): void
+    public function testDelete(): void
     {
 
         $id = $this->status->id;
@@ -83,7 +83,7 @@ class TaskStatusControllerTest extends TestCase
 
 
 
-    public function test_update(): void
+    public function testUpdate(): void
     {
         $id = $this->status->id;
         $newData = ['name' => 'newName'];
