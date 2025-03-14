@@ -22,6 +22,7 @@ jobs:
           php-version: '8.1'
       - name: Install
         # Install project
+        run: composer update
         run: make install
       - name: Lint
         run: make lint 
