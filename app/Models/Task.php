@@ -12,6 +12,8 @@ class Task extends Model
 
     protected $fillable = ['status_id', 'name', 'description', 'created_by_id', 'assigned_to_id'];
 
+    protected $dateFormat = 'd.m.Y';
+
     public function creator()
     {
         return $this->belongsTo('App\Models\User', 'created_by_id');
@@ -30,5 +32,10 @@ class Task extends Model
     public function labels()
     {
         return $this->belongsToMany(Label::class);
+    }
+
+    public function getFormattedUpdateTime()
+    {
+        return $this->updated_at->format('d.m.Y');
     }
 }

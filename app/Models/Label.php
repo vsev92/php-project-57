@@ -12,8 +12,15 @@ class Label extends Model
 
     protected $fillable = ['name', 'description'];
 
+    protected $dateFormat = 'd.m.Y';
+
     public function tasks()
     {
         return $this->belongsToMany(Task::class);
+    }
+
+    public function getFormattedUpdateTime()
+    {
+        return $this->updated_at->format('d.m.Y');
     }
 }

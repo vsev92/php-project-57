@@ -69,7 +69,7 @@
                 </td>
                 <td>{{$task->creator->name}}</td>
                 <td>{{$task->executor?->name}}</td>
-                <td>{{$task->updated_at}}</td>
+                <td>{{$task->getFormattedUpdateTime()}}</td>
 
                 <td>
                     @can('delete-task', $task)

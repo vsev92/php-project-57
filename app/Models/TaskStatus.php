@@ -11,8 +11,15 @@ class TaskStatus extends Model
 
     protected $fillable = ['id', 'name'];
 
+    protected $dateFormat = 'd.m.Y';
+
     public function tasks()
     {
         return $this->hasMany('App\Models\Task', 'status_id');
+    }
+
+    public function getFormattedUpdateTime()
+    {
+        return $this->updated_at->format('d.m.Y');
     }
 }
