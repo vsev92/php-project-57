@@ -82,7 +82,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label, Request $request)
     {
-        if (!Gate::allows('delete-label')  || !empty($label->tasks->all())) {
+        if (!Gate::allows('delete-label')  || !empty($label->getTasks->all())) {
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
             $label->delete();
