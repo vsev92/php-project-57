@@ -24,7 +24,7 @@
                 <tr class="border-b border-dashed text-left">
                     <td>{{$status->id}}</td>
                     <td>{{$status->name}}</td>
-                    <td>{{$status->getFormattedUpdateTime()}}</td>
+                    <td>{{$status->updated_at}}</td>
                     <td>
                         @can('delete-taskStatus')
                         <a
