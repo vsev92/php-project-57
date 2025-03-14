@@ -18,7 +18,7 @@
         <label for="description">Описание</label>
     </div>
     <div>
-        <textarea class="rounded border-gray-300 w-1/3 h-32" name="description" id="description">{{$task->description}}</textarea>
+        <textarea class="rounded border-gray-300 w-1/3 h-32" name="description" id="description"> {{$task->description}}</textarea>
     </div>
     <div class="mt-2">
         <label for="status_id">Статус</label>
@@ -27,7 +27,11 @@
         <select class="rounded border-gray-300 w-1/3" name="status_id" id="status_id">
             <option value=""></option>
             @foreach ($statuses as $taskStatus)
+            @if ($task->status?->id === $taskStatus->id)
+            <option value="{{$taskStatus->id}}" selected="selected"> {{$taskStatus->name}} </option>
+            @else
             <option value="{{$taskStatus->id}}"> {{$taskStatus->name}} </option>
+            @endif
             @endforeach
         </select>
     </div>
@@ -47,7 +51,11 @@
         <select class="rounded border-gray-300 w-1/3" name="assigned_to_id" id="assigned_to_id">
             <option value=""></option>
             @foreach ($users as $user)
+            @if ($task->executor?->id === $user->id)
+            <option value="{{$user->id}}" selected="selected"> {{$user->name}} </option>
+            @else
             <option value="{{$user->id}}"> {{$user->name}} </option>
+            @endif
             @endforeach
         </select>
     </div>
@@ -56,8 +64,12 @@
     </div>
     <div>
         <select class="rounded border-gray-300 w-1/3 h-32" name="labels[]" id="labels[]" multiple>
-            @foreach ($labels as $label)
+            @foreach($labels as $label)
+            @if ($task->isLabelAttached($label))
+            <option value="{{$label->id}}" selected="selected"> {{$label->name}} </option>
+            @else
             <option value="{{$label->id}}"> {{$label->name}} </option>
+            @endif
             @endforeach
         </select>
     </div>

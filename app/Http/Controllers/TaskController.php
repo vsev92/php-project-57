@@ -28,7 +28,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('created_by_id'),
                 AllowedFilter::exact('assigned_to_id')
             ])
-            ->paginate(4);
+            ->paginate(15);
 
         return view('tasks.index', compact('statuses', 'users', 'tasks'));
     }
@@ -57,9 +57,10 @@ class TaskController extends Controller
 
             ]);
             $data['created_by_id'] =  Auth::id();
-            $data['assigned_to_id'] =  $request?->assigned_to_id;
+            $data['assigned_to_id'] =  $request->assigned_to_id;
             $task = new Task();
             $task->fill($data);
+            $task->description = $request->description;
             $labels = $request->labels;
             $task->save();
             $task->labels()->attach($labels);
@@ -74,6 +75,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+
         return view('tasks.show', compact('task'));
     }
 
@@ -101,6 +103,7 @@ class TaskController extends Controller
                 'status_id' => 'required',
             ]);
             $newTask->fill($data);
+            $newTask->description = $request->description;
             $labels = $request->labels;
             $newTask->labels()->detach();
             $newTask->labels()->attach($labels);
