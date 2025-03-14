@@ -17,5 +17,5 @@
     <label for="description">Описание</label>
 </div>
 <div class="mt-2">
-    <textarea class="rounded border-gray-300 w-1/3 h-32" name="description" id="description" value="{{$label->description}}"></textarea>
+    <textarea class="rounded border-gray-300 w-1/3 h-32" name="description" id="description">{{$label->description}}</textarea>
 </div>

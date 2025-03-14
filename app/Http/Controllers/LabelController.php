@@ -70,6 +70,7 @@ class LabelController extends Controller
             $data = $request->validate([
                 'name' => "required",
             ]);
+            $label->description = $request->description;
             $label->fill($data);
             $label->save();
             flash('Метка успешно изменена')->success();
