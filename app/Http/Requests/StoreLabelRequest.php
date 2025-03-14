@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTaskStatusRequest extends FormRequest
+class StoreLabelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class StoreTaskStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:task_statuses,name'
+            'name' => 'required|unique:labels,name'
         ];
     }
 
@@ -31,7 +31,7 @@ class StoreTaskStatusRequest extends FormRequest
 
         return [
 
-            'name.unique' => 'Метка с таким именем уже существует'
+            'name.unique' => 'Статус с таким именем уже существует'
 
         ];
     }

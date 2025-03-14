@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreLabelRequest;
 
 class LabelController extends Controller
 {
@@ -29,12 +30,10 @@ class LabelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreLabelRequest $request)
     {
         if (Gate::allows('store-label')) {
-            $data = $request->validate([
-                'name' => 'required'
-            ]);
+            $data = $request->validated();
             $label = new Label();
             $label->fill($data);
             $label->description = $request->description;
