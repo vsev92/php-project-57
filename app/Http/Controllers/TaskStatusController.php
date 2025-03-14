@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreTaskStatusRequest;
 
 class TaskStatusController extends Controller
 {
@@ -29,13 +30,12 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTaskStatusRequest $request)
     {
         if (Gate::allows('store-taskStatus')) {
-            $data = $request->validate([
-                'name' => 'required|unique:task_statuses,name'
 
-            ]);
+
+            $data = $request->validated();
             $status = new TaskStatus();
             $status->fill($data);
             $status->save();
