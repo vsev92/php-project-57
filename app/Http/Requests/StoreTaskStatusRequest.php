@@ -31,7 +31,7 @@ class StoreTaskStatusRequest extends FormRequest
 
         return [
 
-            'name.unique' => 'Метка с таким именем уже существует'
+            'name.unique' => 'Статус с таким именем уже существует'
 
         ];
     }
