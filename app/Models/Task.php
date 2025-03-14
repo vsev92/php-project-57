@@ -12,7 +12,6 @@ class Task extends Model
 
     protected $fillable = ['status_id', 'name', 'description', 'created_by_id', 'assigned_to_id'];
 
-    protected $dateFormat = 'd.m.Y';
 
     public function creator()
     {

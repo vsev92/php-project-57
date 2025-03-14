@@ -12,7 +12,6 @@ class Label extends Model
 
     protected $fillable = ['name', 'description'];
 
-    protected $dateFormat = 'd.m.Y';
 
     public function tasks()
     {

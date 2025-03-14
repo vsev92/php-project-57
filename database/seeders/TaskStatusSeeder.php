@@ -12,9 +12,10 @@ class TaskStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('task_statuses')->insert(['name' => 'новый']);
-        DB::table('task_statuses')->insert(['name' => 'в работе']);
-        DB::table('task_statuses')->insert(['name' => 'на тестировании']);
-        DB::table('task_statuses')->insert(['name' => 'завершен']);
+        $dt = \Carbon\Carbon::now();
+        DB::table('task_statuses')->insert(['name' => 'новый', 'created_at' => $dt, 'updated_at' => $dt]);
+        DB::table('task_statuses')->insert(['name' => 'в работе', 'created_at' => $dt, 'updated_at' => $dt]);
+        DB::table('task_statuses')->insert(['name' => 'на тестировании', 'created_at' => $dt, 'updated_at' => $dt]);
+        DB::table('task_statuses')->insert(['name' => 'завершен', 'created_at' => $dt, 'updated_at' => $dt]);
     }
 }
