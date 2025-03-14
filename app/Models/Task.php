@@ -40,10 +40,12 @@ class Task extends Model
 
     public function isLabelAttached($label)
     {
-        $result = false;
-        foreach ($this->labels->all() as $checkLabel) {
-            $result = $label->id === $checkLabel->id;
+        $attachedLabels = $this->labels;
+        foreach ($attachedLabels as $attachedLabel) {
+            if ($label->id === $attachedLabel->id) {
+                return true;
+            }
         }
-        return $result;
+        return false;
     }
 }

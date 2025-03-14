@@ -104,6 +104,7 @@ class TaskController extends Controller
             ]);
             $newTask->fill($data);
             $newTask->description = $request->description;
+            $newTask->assigned_to_id = $request->assigned_to_id;
             $labels = $request->labels;
             $newTask->labels()->detach();
             $newTask->labels()->attach($labels);
