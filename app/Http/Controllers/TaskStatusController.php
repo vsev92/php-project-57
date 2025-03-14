@@ -33,8 +33,6 @@ class TaskStatusController extends Controller
     public function store(StoreTaskStatusRequest $request)
     {
         if (Gate::allows('store-taskStatus')) {
-
-
             $data = $request->validated();
             $status = new TaskStatus();
             $status->fill($data);

@@ -37,6 +37,7 @@ class LabelController extends Controller
             ]);
             $label = new Label();
             $label->fill($data);
+            $label->description = $request->description;
             $label->save();
             flash('Метка успешно создана')->success();
         }
