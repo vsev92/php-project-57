@@ -21,6 +21,6 @@ class Label extends Model
 
     public function getFormattedUpdateTime()
     {
-        return $this->updated_at->format('d.m.Y');
+        return $this->updated_at?->format('d.m.Y');
     }
 }
