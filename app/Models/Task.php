@@ -38,7 +38,7 @@ class Task extends Model
         return $this->updated_at?->format('d.m.Y');
     }
 
-    public function isLabelAttached($label)
+    public function isLabelAttached(Label $label)
     {
         $attachedLabels = $this->labels;
         foreach ($attachedLabels as $attachedLabel) {

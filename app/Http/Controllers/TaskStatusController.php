@@ -82,7 +82,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
-        if (!Gate::allows('store-taskStatus') || !empty($taskStatus->tasks->all())) {
+        if (!Gate::allows('store-taskStatus') || ($taskStatus->tasks->all()) !== []) {
             flash('Не удалось удалить статус')->error();
         } else {
             $taskStatus->delete();

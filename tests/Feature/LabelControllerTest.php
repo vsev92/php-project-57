@@ -13,10 +13,10 @@ class LabelControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
-    private $status;
-    private $task;
-    private $label;
+    private User $user;
+    private TaskStatus $status;
+    private Task $task;
+    private Label $label;
 
     public function setUp(): void
     {
