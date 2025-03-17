@@ -79,7 +79,7 @@ class TaskControllerTest extends TestCase
         $response = $this->actingAs($otherUser)->delete($url);
 
 
-        $response = $this->actingAs($this->task->created_by)->delete($url);
+        $response = $this->actingAs($this->task->creator)->delete($url);
         $this->assertDatabaseMissing('tasks', ['id' => $id]);
         $response->assertRedirect(route('tasks.index'));
     }

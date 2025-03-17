@@ -67,7 +67,7 @@
                         {{$task->name}}
                     </a>
                 </td>
-                <td>{{$task->created_by->name}}</td>
+                <td>{{$task->creator->name}}</td>
                 <td>{{$task->executor?->name}}</td>
                 <td>{{$task->getFormattedUpdateTime()}}</td>
 
