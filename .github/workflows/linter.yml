@@ -23,6 +23,6 @@ jobs:
       - name: Install
         # Install project
         run: composer update
-        run: make install
+             make install
       - name: Lint
         run: make lint 
