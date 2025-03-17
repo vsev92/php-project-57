@@ -14,7 +14,6 @@ class LabelControllerTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
-    private TaskStatus $status;
     private Task $task;
     private Label $label;
 
@@ -22,7 +21,6 @@ class LabelControllerTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->status =  TaskStatus::factory()->create();
         $this->task = Task::factory()->create();
         $this->label = Label::factory()->create();
     }
