@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Task;
@@ -12,13 +13,23 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    //public function register(): void {}
+    public function register()
+
+    {
+
+        if (env('APP_ENV') !== 'local') {
+
+            URL::forceScheme('https');
+        }
+    }
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+
+
         Gate::define('store-task', function (User $user) {
 
             return  $user !== null;

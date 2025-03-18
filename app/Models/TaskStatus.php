@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class TaskStatus extends Model
 {
@@ -11,7 +13,7 @@ class TaskStatus extends Model
 
     protected $fillable = ['id', 'name'];
 
-    public function tasks()
+    public function tasks(): HasMany
     {
         return $this->hasMany('App\Models\Task', 'status_id');
     }
