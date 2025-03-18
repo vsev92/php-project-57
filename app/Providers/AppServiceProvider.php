@@ -14,11 +14,8 @@ class AppServiceProvider extends ServiceProvider
      * Register any application services.
      */
     public function register()
-
     {
-
         if (env('APP_ENV') !== 'local') {
-
             URL::forceScheme('https');
         }
     }
