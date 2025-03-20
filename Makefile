@@ -5,7 +5,7 @@ install:
 validate:
 	composer validate
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 app
+	composer exec --verbose phpcs -- --standard=PSR12 app tests
 stan:
 	composer phpstan
 test:

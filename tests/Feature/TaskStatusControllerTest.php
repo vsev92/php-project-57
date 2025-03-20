@@ -7,7 +7,6 @@ use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();

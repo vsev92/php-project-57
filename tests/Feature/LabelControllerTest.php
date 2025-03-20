@@ -6,7 +6,6 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
@@ -35,7 +34,7 @@ class LabelControllerTest extends TestCase
         $response = $this->post(route('labels.store', $data));
         $this->assertDatabaseMissing('labels', $data);
 
-        $response = $this->actingAs($this->user)->post(route('labels.store',  $invalidData));
+        $response = $this->actingAs($this->user)->post(route('labels.store', $invalidData));
         $response->assertInvalid(['name']);
         $response = $this->actingAs($this->user)->post(route('labels.store', $data));
         $response->assertValid();

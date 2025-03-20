@@ -4,12 +4,10 @@ namespace Tests;
 
 use App\Models\User;
 use App\Models\TaskStatus;
-
 use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
