@@ -26,6 +26,29 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        Gate::define('create-task', function (User $user) {
+            return $user !== null;
+        });
+
+        Gate::define('create-task_status', function (User $user) {
+            return $user !== null;
+        });
+
+        Gate::define('create-label', function (User $user) {
+            return $user !== null;
+        });
+
+        Gate::define('edit-task', function (User $user) {
+            return $user !== null;
+        });
+
+        Gate::define('edit-task_status', function (User $user) {
+            return $user !== null;
+        });
+
+        Gate::define('edit-label', function (User $user) {
+            return $user !== null;
+        });
 
         Gate::define('store-task', function (User $user) {
 

@@ -2,37 +2,30 @@
 
 namespace Tests;
 
-use App\Models\User;
-use App\Models\TaskStatus;
 use App\Models\Task;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private User $user;
-    private TaskStatus $status;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
-        $this->status =  TaskStatus::factory()->create();
     }
 
     public function testIndex(): void
     {
-        $response = $this->get('/task_statuses');
-        $response->assertStatus(200);
+        $response = $this->get(route('task_statuses.index'));
+        $response->assertOk();
     }
 
 
     public function testCreate(): void
     {
-        $response = $this->get('/task_statuses/create');
-        $response->assertStatus(200);
+        $response = $this->get(route('task_statuses.create'));
+        $response->assertStatus(403);
+        $response = $this->actingAs($this->user)->get(route('task_statuses.create'));
+        $response->assertOk();
     }
 
 
@@ -40,44 +33,48 @@ class TaskStatusControllerTest extends TestCase
     public function testStore(): void
     {
         $data = ['name' => 'testStatusName'];
+        $invalidData = ['name' => ''];
 
-        $response = $this->post('/task_statuses', $data);
+        $response = $this->post(route('task_statuses.store'), $data);
         $this->assertDatabaseMissing('task_statuses', $data);
 
-        $response = $this->actingAs($this->user)->post('/task_statuses', $data);
-        $this->assertDatabaseHas('task_statuses', $data);
-
+        $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $invalidData);
+        $response->assertInvalid(['name']);
+        $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $data);
+        $response->assertValid();
         $response->assertRedirect(route('task_statuses.index'));
+        $this->assertDatabaseHas('task_statuses', $data);
+        $response = $this->actingAs($this->user)->post(route('task_statuses.store'), $data);
+        $response->assertInvalid(['name']);
     }
 
 
 
     public function testEdit(): void
     {
-        $url = "/task_statuses/{$this->status->id}/edit";
-        $response = $this->get($url);
-        $response->assertStatus(200);
+        $id = $this->status->id;
+        $response = $this->get(route('task_statuses.edit', $id));
+        $response->assertStatus(403);
+        $response = $this->actingAs($this->user)->get(route('task_statuses.edit', $id));
+        $response->assertOk();
     }
 
 
     public function testDelete(): void
     {
-
         $id = $this->status->id;
-        $url = "/task_statuses/{$id}";
 
-        $response = $this->delete($url);
+        $response = $this->delete(route('task_statuses.destroy', $id));
         $this->assertDatabaseHas('task_statuses', ['id' =>  $id]);
 
         $task = Task::factory()->create(['status_id' => $this->status->id]);
-        $response = $this->actingAs($this->user)->delete($url);
+        $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', $id));
         $this->assertDatabaseHas('task_statuses', ['id' =>  $id]);
         $task->delete();
 
-        $response = $this->actingAs($this->user)->delete($url);
-        $this->assertDatabaseMissing('task_statuses', ['id' =>  $id]);
-
+        $response = $this->actingAs($this->user)->delete(route('task_statuses.destroy', $id));
         $response->assertRedirect(route('task_statuses.index'));
+        $this->assertDatabaseMissing('task_statuses', ['id' =>  $id]);
     }
 
 
@@ -86,14 +83,15 @@ class TaskStatusControllerTest extends TestCase
     {
         $id = $this->status->id;
         $newData = ['name' => 'newName'];
-        $url = "/task_statuses/{$id}";
+        $invalidData = ['name' => ''];
 
-        $response = $this->patch($url, $newData);
+        $response = $this->patch(route('task_statuses.update', $id), $newData);
         $this->assertDatabaseMissing('task_statuses', $newData);
-
-        $response = $this->actingAs($this->user)->patch($url, $newData);
-        $this->assertDatabaseHas('task_statuses', $newData);
-
+        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $id), $invalidData);
+        $response->assertInvalid(['name']);
+        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $id), $newData);
+        $response->assertValid();
         $response->assertRedirect(route('task_statuses.index'));
+        $this->assertDatabaseHas('task_statuses', $newData);
     }
 }

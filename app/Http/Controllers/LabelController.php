@@ -23,8 +23,12 @@ class LabelController extends Controller
      */
     public function create()
     {
-        $label = new Label();
-        return view('labels.create', compact('label'));
+        if (!Gate::allows('create-label')) {
+            abort(403);
+        } else {
+            $label = new Label();
+            return view('labels.create', compact('label'));
+        }
     }
 
     /**
@@ -56,7 +60,11 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        return view('labels.edit', compact('label'));
+        if (!Gate::allows('edit-label')) {
+            abort(403);
+        } else {
+            return view('labels.edit', compact('label'));
+        }
     }
 
     /**

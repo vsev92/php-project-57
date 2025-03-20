@@ -23,8 +23,12 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        $taskStatus = new TaskStatus();
-        return view('statuses.create', compact('taskStatus'));
+        if (!Gate::allows('create-task_status')) {
+            abort(403);
+        } else {
+            $taskStatus = new TaskStatus();
+            return view('statuses.create', compact('taskStatus'));
+        }
     }
 
     /**
@@ -55,7 +59,11 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        return view('statuses.edit', compact('taskStatus'));
+        if (!Gate::allows('edit-task_status')) {
+            abort(403);
+        } else {
+            return view('statuses.edit', compact('taskStatus'));
+        }
     }
 
     /**

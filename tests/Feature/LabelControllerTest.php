@@ -2,100 +2,92 @@
 
 namespace Tests;
 
-use App\Models\User;
-use App\Models\TaskStatus;
-use App\Models\Task;
-use App\Models\Label;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private User $user;
-    private Task $task;
-    private Label $label;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
-        $this->task = Task::factory()->create();
-        $this->label = Label::factory()->create();
     }
 
     public function testIndex(): void
     {
-        $response = $this->get('/labels');
-        $response->assertStatus(200);
+        $response = $this->get(route('labels.index'));
+        $response->assertOk();
     }
 
 
     public function testCreate(): void
     {
-        $response = $this->get('/labels/create');
-        $response->assertStatus(200);
+        $response = $this->get(route('labels.create'));
+        $response->assertForbidden();
+        $response = $this->actingAs($this->user)->get(route('labels.create'));
+        $response->assertOk();
     }
 
     public function testStore(): void
     {
-        $data = [
-            'name' => 'testName'
-        ];
-        $response = $this->post('/labels', $data);
+        $data = ['name' => 'testName'];
+        $invalidData = ['name' => ''];
+
+        $response = $this->post(route('labels.store', $data));
         $this->assertDatabaseMissing('labels', $data);
 
-        $response = $this->actingAs($this->user)->post('/labels', $data);
-        $this->assertDatabaseHas('labels', $data);
-
+        $response = $this->actingAs($this->user)->post(route('labels.store',  $invalidData));
+        $response->assertInvalid(['name']);
+        $response = $this->actingAs($this->user)->post(route('labels.store', $data));
+        $response->assertValid();
         $response->assertRedirect(route('labels.index'));
+        $this->assertDatabaseHas('labels', $data);
+        $response = $this->actingAs($this->user)->post(route('labels.store', $data));
+        $response->assertInvalid(['name']);
     }
 
     public function testEdit(): void
     {
-
-        $url = "/labels/{$this->label->id}/edit";
-        $response = $this->get($url);
-        $response->assertStatus(200);
+        $id = $this->label->id;
+        $response = $this->get(route('labels.edit', $id));
+        $response->assertForbidden();
+        $response = $this->actingAs($this->user)->get(route('labels.edit', $id));
+        $response->assertOk();
     }
 
 
     public function testDelete(): void
     {
         $id = $this->label->id;
-        $url = "/labels/{$id}";
 
-        $response = $this->delete($url);
+        $response = $this->delete(route('labels.destroy', $id));
         $this->assertDatabaseHas('labels', ['id' => $id]);
 
         $this->label->tasks()->attach([$this->task]);
-        $response = $this->actingAs($this->user)->delete($url);
+        $response = $this->actingAs($this->user)->delete(route('labels.destroy', $id));
         $this->assertDatabaseHas('labels', ['id' => $id]);
         $this->label->tasks()->detach();
 
-        $response = $this->actingAs($this->user)->delete($url);
-        $this->assertDatabaseMissing('labels', ['id' => $id]);
-
-
+        $response = $this->actingAs($this->user)->delete(route('labels.destroy', $id));
         $response->assertRedirect(route('labels.index'));
+        $this->assertDatabaseMissing('labels', ['id' => $id]);
     }
 
 
 
     public function testUpdate(): void
     {
-
         $id = $this->label->id;
         $newData = ['name' => 'newName'];
-        $url = "/labels/{$id}";
+        $invalidData = ['name' => ''];
 
-        $response = $this->patch($url, $newData);
+        $response = $this->patch(route('labels.update', $id), $newData);
         $this->assertDatabaseMissing('labels', $newData);
 
-        $response = $this->actingAs($this->user)->patch($url, $newData);
-        $this->assertDatabaseHas('labels', $newData);
-
+        $response = $this->actingAs($this->user)->patch(route('labels.update', $id), $invalidData);
+        $response->assertInvalid(['name']);
+        $response = $this->actingAs($this->user)->patch(route('labels.update', $id), $newData);
+        $response->assertValid();
         $response->assertRedirect(route('labels.index'));
+        $this->assertDatabaseHas('labels', $newData);
     }
 }

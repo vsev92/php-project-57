@@ -38,11 +38,15 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $statuses = TaskStatus::all();
-        $users = User::all();
-        $labels = Label::all();
-        $task = new Task();
-        return view('tasks.create', compact('task', 'statuses', 'users', 'labels'));
+        if (!Gate::allows('create-task')) {
+            abort(403);
+        } else {
+            $statuses = TaskStatus::all();
+            $users = User::all();
+            $labels = Label::all();
+            $task = new Task();
+            return view('tasks.create', compact('task', 'statuses', 'users', 'labels'));
+        }
     }
 
     /**
@@ -84,10 +88,14 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        $statuses = TaskStatus::all();
-        $users = User::all();
-        $labels = Label::all();
-        return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
+        if (!Gate::allows('edit-task')) {
+            abort(403);
+        } else {
+            $statuses = TaskStatus::all();
+            $users = User::all();
+            $labels = Label::all();
+            return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
+        }
     }
 
     /**
