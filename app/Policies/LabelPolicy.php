@@ -8,7 +8,7 @@ class LabelPolicy
 {
     public function view(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     /**
@@ -16,12 +16,12 @@ class LabelPolicy
      */
     public function create(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     public function store(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     /**
@@ -29,12 +29,12 @@ class LabelPolicy
      */
     public function edit(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     public function update(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     /**
@@ -42,6 +42,6 @@ class LabelPolicy
      */
     public function delete(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 }

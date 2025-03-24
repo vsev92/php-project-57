@@ -9,7 +9,7 @@ class TaskPolicy
 {
     public function view(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     /**
@@ -17,12 +17,12 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     public function store(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     /**
@@ -30,12 +30,12 @@ class TaskPolicy
      */
     public function edit(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     public function update(User $user): bool
     {
-        return $user !== null;
+        return isset($user);
     }
 
     /**
@@ -43,6 +43,6 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $user->id === $task->created_by_id;
+        return isset($user) && $user->id === $task->created_by_id;
     }
 }

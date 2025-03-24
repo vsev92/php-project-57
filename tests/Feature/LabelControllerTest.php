@@ -6,9 +6,9 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-    private $validLabelData;
-    private $invalidLabelData;
-    private $patchedLabelData;
+    private array $validLabelData;
+    private array $invalidLabelData;
+    private array $patchedLabelData;
 
     public function setUp(): void
     {

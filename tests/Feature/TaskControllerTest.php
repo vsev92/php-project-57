@@ -8,9 +8,9 @@ use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
-    private $validTaskData;
-    private $invalidTaskData;
-    private $patchedTaskData;
+    private array $validTaskData;
+    private array $invalidTaskData;
+    private array $patchedTaskData;
 
     public function setUp(): void
     {
