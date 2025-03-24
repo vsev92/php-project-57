@@ -2,13 +2,14 @@
 
 namespace App\Policies;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class TaskStatusPolicy
 {
     public function view(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     /**
@@ -16,12 +17,12 @@ class TaskStatusPolicy
      */
     public function create(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     public function store(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     /**
@@ -29,12 +30,12 @@ class TaskStatusPolicy
      */
     public function edit(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     public function update(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     /**
@@ -42,6 +43,6 @@ class TaskStatusPolicy
      */
     public function delete(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 }

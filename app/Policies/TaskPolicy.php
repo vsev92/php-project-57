@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Task;
 
@@ -9,7 +10,7 @@ class TaskPolicy
 {
     public function view(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     /**
@@ -17,12 +18,12 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     public function store(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     /**
@@ -30,12 +31,12 @@ class TaskPolicy
      */
     public function edit(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     public function update(User $user): bool
     {
-        return isset($user);
+        return Auth::user() !== null;
     }
 
     /**
@@ -43,6 +44,6 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return isset($user) && $user->id === $task->created_by_id;
+        return Auth::user() !== null && $user->id === $task->created_by_id;
     }
 }
