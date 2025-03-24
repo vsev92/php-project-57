@@ -26,3 +26,4 @@ jobs:
              make install
       - name: Lint
         run: make lint 
+             make test

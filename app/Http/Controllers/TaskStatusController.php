@@ -23,12 +23,9 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('create-task_status')) {
-            abort(403);
-        } else {
-            $taskStatus = new TaskStatus();
-            return view('statuses.create', compact('taskStatus'));
-        }
+        $taskStatus = new TaskStatus();
+        Gate::authorize('create-taskStatus', $taskStatus);
+        return view('statuses.create', compact('taskStatus'));
     }
 
     /**
@@ -36,22 +33,13 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatusRequest $request)
     {
-        if (Gate::allows('store-taskStatus')) {
-            $data = $request->validated();
-            $status = new TaskStatus();
-            $status->fill($data);
-            $status->save();
-            flash('Статус успешно создан')->success();
-        }
+        $status = new TaskStatus();
+        Gate::authorize('store-taskStatus', $status);
+        $data = $request->validated();
+        $status->fill($data);
+        $status->save();
+        flash('Статус успешно создан')->success();
         return redirect()->route('task_statuses.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(TaskStatus $taskStatus)
-    {
-        //
     }
 
     /**
@@ -59,11 +47,8 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        if (!Gate::allows('edit-task_status')) {
-            abort(403);
-        } else {
-            return view('statuses.edit', compact('taskStatus'));
-        }
+        Gate::authorize('edit-taskStatus', $taskStatus);
+        return view('statuses.edit', compact('taskStatus'));
     }
 
     /**
@@ -71,17 +56,15 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        if (Gate::allows('update-taskStatus')) {
-            $newStatus = TaskStatus::findOrFail($taskStatus->id);
-            $data = $request->validate([
+        Gate::authorize('update-taskStatus', $taskStatus);
+        $newStatus = TaskStatus::findOrFail($taskStatus->id);
+        $data = $request->validate([
 
-                'name' => "required"
-            ]);
-
-            $newStatus->fill($data);
-            $newStatus->save();
-            flash('Статус успешно изменён')->success();
-        }
+            'name' => "required"
+        ]);
+        $newStatus->fill($data);
+        $newStatus->save();
+        flash('Статус успешно изменён')->success();
         return redirect()->route('task_statuses.index');
     }
 
@@ -90,7 +73,8 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
-        if (!Gate::allows('store-taskStatus') || ($taskStatus->tasks->all()) !== []) {
+        Gate::authorize('delete-taskStatus', $taskStatus);
+        if (($taskStatus->tasks->count()) > 0) {
             flash('Не удалось удалить статус')->error();
         } else {
             $taskStatus->delete();

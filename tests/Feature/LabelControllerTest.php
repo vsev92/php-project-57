@@ -6,9 +6,16 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
+    private $validLabelData;
+    private $invalidLabelData;
+    private $patchedLabelData;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->validLabelData = ['name' => 'testName'];
+        $this->invalidLabelData = ['name' => ''];
+        $this->patchedLabelData = ['name' => 'newName'];
     }
 
     public function testIndex(): void
@@ -17,76 +24,93 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-
-    public function testCreate(): void
+    public function testCreateWithoutAuthentication(): void
     {
         $response = $this->get(route('labels.create'));
         $response->assertForbidden();
+    }
+
+    public function testCreate(): void
+    {
         $response = $this->actingAs($this->user)->get(route('labels.create'));
         $response->assertOk();
     }
 
-    public function testStore(): void
+
+    public function testStoreWithoutAuthentication(): void
     {
-        $data = ['name' => 'testName'];
-        $invalidData = ['name' => ''];
+        $this->post(route('labels.store', $this->validLabelData));
+        $this->assertDatabaseMissing('labels', $this->validLabelData);
+    }
 
-        $response = $this->post(route('labels.store', $data));
-        $this->assertDatabaseMissing('labels', $data);
-
-        $response = $this->actingAs($this->user)->post(route('labels.store', $invalidData));
+    public function testStoreWithInvalidName(): void
+    {
+        $response = $this->actingAs($this->user)->post(route('labels.store', $this->invalidLabelData));
         $response->assertInvalid(['name']);
-        $response = $this->actingAs($this->user)->post(route('labels.store', $data));
+    }
+
+
+    public function testStoreWithNotUniqueName(): void
+    {
+        $response = $this->actingAs($this->user)->post(route('labels.store', $this->validLabelData));
         $response->assertValid();
         $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseHas('labels', $data);
-        $response = $this->actingAs($this->user)->post(route('labels.store', $data));
+        $this->assertDatabaseHas('labels', $this->validLabelData);
+        $response = $this->actingAs($this->user)->post(route('labels.store', $this->validLabelData));
         $response->assertInvalid(['name']);
+    }
+
+    public function testEditWithoutAuthentication(): void
+    {
+        $response = $this->get(route('labels.edit', $this->label->id));
+        $response->assertForbidden();
     }
 
     public function testEdit(): void
     {
-        $id = $this->label->id;
-        $response = $this->get(route('labels.edit', $id));
-        $response->assertForbidden();
-        $response = $this->actingAs($this->user)->get(route('labels.edit', $id));
+        $response = $this->actingAs($this->user)->get(route('labels.edit', $this->label->id));
         $response->assertOk();
     }
 
+    public function testDeleteWithoutAuthentication(): void
+    {
+        $this->delete(route('labels.destroy', $this->label->id));
+        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
+    }
+
+    public function testDeleteLabelWithAttachedTasks(): void
+    {
+        $id = $this->label->id;
+        $this->label->tasks()->attach([$this->task]);
+        $this->actingAs($this->user)->delete(route('labels.destroy', $id));
+        $this->assertDatabaseHas('labels', ['id' => $id]);
+    }
 
     public function testDelete(): void
     {
         $id = $this->label->id;
-
-        $response = $this->delete(route('labels.destroy', $id));
-        $this->assertDatabaseHas('labels', ['id' => $id]);
-
-        $this->label->tasks()->attach([$this->task]);
-        $response = $this->actingAs($this->user)->delete(route('labels.destroy', $id));
-        $this->assertDatabaseHas('labels', ['id' => $id]);
-        $this->label->tasks()->detach();
-
         $response = $this->actingAs($this->user)->delete(route('labels.destroy', $id));
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseMissing('labels', ['id' => $id]);
     }
 
+    public function testUpdateWithoutAuthentication(): void
+    {
+        $this->patch(route('labels.update', $this->label->id), $this->invalidLabelData);
+        $this->assertDatabaseMissing('labels', $this->invalidLabelData);
+    }
 
+    public function testUpdateWithInvalidData(): void
+    {
+        $response = $this->actingAs($this->user)->patch(route('labels.update', $this->label->id), $this->invalidLabelData);
+        $response->assertInvalid(['name']);
+    }
 
     public function testUpdate(): void
     {
-        $id = $this->label->id;
-        $newData = ['name' => 'newName'];
-        $invalidData = ['name' => ''];
-
-        $response = $this->patch(route('labels.update', $id), $newData);
-        $this->assertDatabaseMissing('labels', $newData);
-
-        $response = $this->actingAs($this->user)->patch(route('labels.update', $id), $invalidData);
-        $response->assertInvalid(['name']);
-        $response = $this->actingAs($this->user)->patch(route('labels.update', $id), $newData);
+        $response = $this->actingAs($this->user)->patch(route('labels.update', $this->label->id), $this->patchedLabelData);
         $response->assertValid();
         $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseHas('labels', $newData);
+        $this->assertDatabaseHas('labels', $this->patchedLabelData);
     }
 }

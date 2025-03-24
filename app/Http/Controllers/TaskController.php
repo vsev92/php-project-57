@@ -38,15 +38,12 @@ class TaskController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('create-task')) {
-            abort(403);
-        } else {
-            $statuses = TaskStatus::all();
-            $users = User::all();
-            $labels = Label::all();
-            $task = new Task();
-            return view('tasks.create', compact('task', 'statuses', 'users', 'labels'));
-        }
+        $task = new Task();
+        Gate::authorize('create-task', $task);
+        $statuses = TaskStatus::all();
+        $users = User::all();
+        $labels = Label::all();
+        return view('tasks.create', compact('task', 'statuses', 'users', 'labels'));
     }
 
     /**
@@ -54,23 +51,22 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        if (Gate::allows('store-task')) {
-            $data = $request->validate([
-                'name' => 'required',
-                'status_id' => 'required',
+        $task = new Task();
+        Gate::authorize('store-task', $task);
+        $data = $request->validate([
+            'name' => 'required',
+            'status_id' => 'required',
 
-            ]);
-            $data['created_by_id'] =  Auth::id();
-            $data['assigned_to_id'] =  $request->assigned_to_id;
-            $task = new Task();
-            $task->fill($data);
-            $task->description = $request->description;
-            $labels = $request->labels;
-            $task->save();
-            $task->labels()->attach($labels);
-            $task->save();
-            flash('Задача успешно создана')->success();
-        }
+        ]);
+        $data['created_by_id'] =  Auth::id();
+        $data['assigned_to_id'] =  $request->assigned_to_id;
+        $task->fill($data);
+        $task->description = $request->description;
+        $labels = $request->labels;
+        $task->save();
+        $task->labels()->attach($labels);
+        $task->save();
+        flash('Задача успешно создана')->success();
         return redirect()->route('tasks.index');
     }
 
@@ -79,7 +75,6 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-
         return view('tasks.show', compact('task'));
     }
 
@@ -88,14 +83,11 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        if (!Gate::allows('edit-task')) {
-            abort(403);
-        } else {
-            $statuses = TaskStatus::all();
-            $users = User::all();
-            $labels = Label::all();
-            return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
-        }
+        Gate::authorize('edit-task', $task);
+        $statuses = TaskStatus::all();
+        $users = User::all();
+        $labels = Label::all();
+        return view('tasks.edit', compact('task', 'statuses', 'users', 'labels'));
     }
 
     /**
@@ -103,22 +95,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        if (Gate::allows('update-task')) {
-            $newTask = Task::findOrFail($task->id);
-            $data = $request->validate([
+        Gate::authorize('update-task', $task);
+        $data = $request->validate([
 
-                'name' => 'required',
-                'status_id' => 'required',
-            ]);
-            $newTask->fill($data);
-            $newTask->description = $request->description;
-            $newTask->assigned_to_id = $request->assigned_to_id;
-            $labels = $request->labels;
-            $newTask->labels()->detach();
-            $newTask->labels()->attach($labels);
-            $newTask->save();
-            flash('Задача успешно изменена')->success();
-        }
+            'name' => 'required',
+            'status_id' => 'required',
+        ]);
+        $task->fill($data);
+        $task->description = $request->description;
+        $task->assigned_to_id = $request->assigned_to_id;
+        $labels = $request->labels;
+        $task->labels()->detach();
+        $task->labels()->attach($labels);
+        $task->save();
+        flash('Задача успешно изменена')->success();
         return redirect()->route('tasks.index');
     }
 
@@ -127,10 +117,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        if (Gate::allows('delete-task', $task)) {
-            $task->delete();
-            flash('Задача успешно удалена')->success();
-        }
+        Gate::authorize('delete-task', $task);
+        $task->delete();
+        flash('Задача успешно удалена')->success();
         return redirect()->route('tasks.index');
     }
 }

@@ -23,12 +23,9 @@ class LabelController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('create-label')) {
-            abort(403);
-        } else {
-            $label = new Label();
-            return view('labels.create', compact('label'));
-        }
+        $label = new Label();
+        Gate::authorize('create', $label);
+        return view('labels.create', compact('label'));
     }
 
     /**
@@ -36,23 +33,14 @@ class LabelController extends Controller
      */
     public function store(StoreLabelRequest $request)
     {
-        if (Gate::allows('store-label')) {
-            $data = $request->validated();
-            $label = new Label();
-            $label->fill($data);
-            $label->description = $request->description;
-            $label->save();
-            flash('Метка успешно создана')->success();
-        }
+        $label = new Label();
+        Gate::authorize('store-label', $label);
+        $data = $request->validated();
+        $label->fill($data);
+        $label->description = $request->description;
+        $label->save();
+        flash('Метка успешно создана')->success();
         return redirect()->route('labels.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Label $label)
-    {
-        //
     }
 
     /**
@@ -60,11 +48,8 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        if (!Gate::allows('edit-label')) {
-            abort(403);
-        } else {
-            return view('labels.edit', compact('label'));
-        }
+        //   Gate::authorize('edit-label', $label);
+        return view('labels.edit', compact('label'));
     }
 
     /**
@@ -72,16 +57,15 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        if (Gate::allows('update-label')) {
-            $label = Label::findOrFail($label->id);
-            $data = $request->validate([
-                'name' => "required",
-            ]);
-            $label->description = $request->description;
-            $label->fill($data);
-            $label->save();
-            flash('Метка успешно изменена')->success();
-        }
+        $label = Label::findOrFail($label->id);
+        //   Gate::authorize('update-label', $label);
+        $data = $request->validate([
+            'name' => "required",
+        ]);
+        $label->description = $request->description;
+        $label->fill($data);
+        $label->save();
+        flash('Метка успешно изменена')->success();
         return redirect()->route('labels.index');
     }
 
@@ -90,7 +74,8 @@ class LabelController extends Controller
      */
     public function destroy(Label $label, Request $request)
     {
-        if (!Gate::allows('delete-label')  || ($label->tasks->all()) !== []) {
+        //    Gate::authorize('delete-label', $label);
+        if (($label->tasks->count()) > 0) {
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {
             $label->delete();

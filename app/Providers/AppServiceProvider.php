@@ -26,11 +26,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        // Gate::policy(Label::class, LabelPolicy::class);
+        /*
         Gate::define('create-task', function (User $user) {
             return $user !== null;
         });
 
-        Gate::define('create-task_status', function (User $user) {
+        Gate::define('create-taskStatus', function (User $user) {
             return $user !== null;
         });
 
@@ -42,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             return $user !== null;
         });
 
-        Gate::define('edit-task_status', function (User $user) {
+        Gate::define('edit-taskStatus', function (User $user) {
             return $user !== null;
         });
 
@@ -93,6 +95,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('delete-label', function (User $user) {
 
             return $user !== null;
-        });
+        });*/
     }
 }
