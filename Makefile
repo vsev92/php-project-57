@@ -9,4 +9,4 @@ lint:
 stan:
 	composer phpstan
 test:
-	php artisan test 
+	./vendor/bin/phpunit 
