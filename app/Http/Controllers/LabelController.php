@@ -34,7 +34,7 @@ class LabelController extends Controller
     public function store(StoreLabelRequest $request)
     {
         $label = new Label();
-        Gate::authorize('store-label', $label);
+        Gate::authorize('store', $label);
         $data = $request->validated();
         $label->fill($data);
         $label->description = $request->description;
@@ -48,7 +48,7 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        //   Gate::authorize('edit-label', $label);
+        Gate::authorize('edit', $label);
         return view('labels.edit', compact('label'));
     }
 
@@ -58,7 +58,7 @@ class LabelController extends Controller
     public function update(Request $request, Label $label)
     {
         $label = Label::findOrFail($label->id);
-        //   Gate::authorize('update-label', $label);
+        Gate::authorize('update', $label);
         $data = $request->validate([
             'name' => "required",
         ]);
@@ -74,7 +74,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label, Request $request)
     {
-        //    Gate::authorize('delete-label', $label);
+        Gate::authorize('delete', $label);
         if (($label->tasks->count()) > 0) {
             $request->session()->flash('error', 'Не удалось удалить метку');
         } else {

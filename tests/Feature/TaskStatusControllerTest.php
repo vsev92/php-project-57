@@ -103,7 +103,6 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseMissing('task_statuses', ['id' =>  $id]);
     }
 
-
     public function testUpdateWithoutAuthentication(): void
     {
         $this->patch(route('task_statuses.update', $this->status->id), $this->patchedTaskStatusData);
@@ -112,13 +111,15 @@ class TaskStatusControllerTest extends TestCase
 
     public function testUpdateWithInvalidData(): void
     {
-        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $this->status->id), $this->invalidTaskStatusData);
+        $response = $this->actingAs($this->user)
+            ->patch(route('task_statuses.update', $this->status->id), $this->invalidTaskStatusData);
         $response->assertInvalid(['name']);
     }
 
     public function testUpdate(): void
     {
-        $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $this->status->id), $this->patchedTaskStatusData);
+        $response = $this->actingAs($this->user)
+            ->patch(route('task_statuses.update', $this->status->id), $this->patchedTaskStatusData);
         $response->assertValid();
         $response->assertRedirect(route('task_statuses.index'));
         $this->assertDatabaseHas('task_statuses', $this->patchedTaskStatusData);

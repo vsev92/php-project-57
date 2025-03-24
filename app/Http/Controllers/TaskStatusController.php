@@ -24,7 +24,7 @@ class TaskStatusController extends Controller
     public function create()
     {
         $taskStatus = new TaskStatus();
-        Gate::authorize('create-taskStatus', $taskStatus);
+        Gate::authorize('create', $taskStatus);
         return view('statuses.create', compact('taskStatus'));
     }
 
@@ -34,7 +34,7 @@ class TaskStatusController extends Controller
     public function store(StoreTaskStatusRequest $request)
     {
         $status = new TaskStatus();
-        Gate::authorize('store-taskStatus', $status);
+        Gate::authorize('store', $status);
         $data = $request->validated();
         $status->fill($data);
         $status->save();
@@ -47,7 +47,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        Gate::authorize('edit-taskStatus', $taskStatus);
+        Gate::authorize('edit', $taskStatus);
         return view('statuses.edit', compact('taskStatus'));
     }
 
@@ -56,7 +56,7 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        Gate::authorize('update-taskStatus', $taskStatus);
+        Gate::authorize('update', $taskStatus);
         $newStatus = TaskStatus::findOrFail($taskStatus->id);
         $data = $request->validate([
 
@@ -73,7 +73,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus, Request $request)
     {
-        Gate::authorize('delete-taskStatus', $taskStatus);
+        Gate::authorize('delete', $taskStatus);
         if (($taskStatus->tasks->count()) > 0) {
             flash('Не удалось удалить статус')->error();
         } else {

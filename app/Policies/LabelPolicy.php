@@ -2,16 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Label;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LabelPolicy
 {
-    /*
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Label $label): bool
+    public function view(User $user): bool
     {
         return $user !== null;
     }
@@ -24,9 +19,19 @@ class LabelPolicy
         return $user !== null;
     }
 
+    public function store(User $user): bool
+    {
+        return $user !== null;
+    }
+
     /**
      * Determine whether the user can update the model.
      */
+    public function edit(User $user): bool
+    {
+        return $user !== null;
+    }
+
     public function update(User $user): bool
     {
         return $user !== null;

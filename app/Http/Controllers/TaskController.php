@@ -39,7 +39,7 @@ class TaskController extends Controller
     public function create()
     {
         $task = new Task();
-        Gate::authorize('create-task', $task);
+        Gate::authorize('create', $task);
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -52,7 +52,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $task = new Task();
-        Gate::authorize('store-task', $task);
+        Gate::authorize('store', $task);
         $data = $request->validate([
             'name' => 'required',
             'status_id' => 'required',
@@ -83,7 +83,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        Gate::authorize('edit-task', $task);
+        Gate::authorize('edit', $task);
         $statuses = TaskStatus::all();
         $users = User::all();
         $labels = Label::all();
@@ -95,7 +95,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        Gate::authorize('update-task', $task);
+        Gate::authorize('update', $task);
         $data = $request->validate([
 
             'name' => 'required',
@@ -117,7 +117,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        Gate::authorize('delete-task', $task);
+        Gate::authorize('delete', $task);
         $task->delete();
         flash('Задача успешно удалена')->success();
         return redirect()->route('tasks.index');

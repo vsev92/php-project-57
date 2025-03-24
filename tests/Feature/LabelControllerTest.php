@@ -102,13 +102,15 @@ class LabelControllerTest extends TestCase
 
     public function testUpdateWithInvalidData(): void
     {
-        $response = $this->actingAs($this->user)->patch(route('labels.update', $this->label->id), $this->invalidLabelData);
+        $response = $this->actingAs($this->user)
+            ->patch(route('labels.update', $this->label->id), $this->invalidLabelData);
         $response->assertInvalid(['name']);
     }
 
     public function testUpdate(): void
     {
-        $response = $this->actingAs($this->user)->patch(route('labels.update', $this->label->id), $this->patchedLabelData);
+        $response = $this->actingAs($this->user)
+            ->patch(route('labels.update', $this->label->id), $this->patchedLabelData);
         $response->assertValid();
         $response->assertRedirect(route('labels.index'));
         $this->assertDatabaseHas('labels', $this->patchedLabelData);
