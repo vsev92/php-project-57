@@ -6,7 +6,7 @@
         @include('flash::message')
         <div class="grid col-span-full">
             <h1 class="mb-5">Метки</h1>
-            @can('store-label')
+            @can('store', App\Models\Label::class)
             <div>
                 <a href="{{route('labels.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Создать метку </a>
@@ -30,7 +30,7 @@
                     <td>{{$label->description}}</td>
                     <td>{{$label->getFormattedUpdateTime()}}</td>
                     <td>
-                        @can('update-label')
+                        @can('update', App\Models\Label::class)
                         <a
                             class="text-blue-600 hover:text-blue-900"
                             href="{{route('labels.edit', $label->id)}}">
@@ -38,7 +38,7 @@
 
                         </a>
                         @endcan
-                        @can('delete-label')
+                        @can('delete', App\Models\Label::class)
                         <a
                             data-confirm="Вы уверены?"
                             data-method="delete"

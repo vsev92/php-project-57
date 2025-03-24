@@ -5,7 +5,7 @@
         @include('flash::message')
         <div class="grid col-span-full">
             <h1 class="mb-5">Статусы</h1>
-            @can('store-taskStatus')
+            @can('store', App\Models\TaskStatus::class)
             <div>
                 <a href="{{route('task_statuses.create')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Создать статус </a>
@@ -26,7 +26,7 @@
                     <td>{{$status->name}}</td>
                     <td>{{$status->getFormattedUpdateTime()}}</td>
                     <td>
-                        @can('delete-taskStatus')
+                        @can('delete', App\Models\TaskStatus::class)
                         <a
                             data-confirm="Вы уверены?"
                             data-method="delete"
@@ -36,7 +36,7 @@
                             Удалить
                         </a>
                         @endcan
-                        @can('update-taskStatus')
+                        @can('update', App\Models\TaskStatus::class)
                         <a
                             class="text-blue-600 hover:text-blue-900"
                             href="{{route('task_statuses.edit', ['task_status'=>$status->id])}}">

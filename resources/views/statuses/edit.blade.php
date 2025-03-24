@@ -7,7 +7,7 @@
         {{ html()->modelForm($taskStatus, 'PATCH', route('task_statuses.update', $taskStatus->id))->open() }}
         @include('statuses.form')
         <div class="flex flex-col">
-            @can('update-taskStatus')
+            @can('update', App\Models\TaskStatus::class)
             <div class="mt-2">
                 {{ html()->submit('Обновить')->class(['bg-blue-500', 'hover:bg-blue-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded' => true]) }}
             </div>

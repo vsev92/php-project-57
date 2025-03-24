@@ -24,6 +24,6 @@ jobs:
         # Install project
         run: composer update
              make install
-      - name: Lint
+      - name: Check
         run: make lint 
              make test

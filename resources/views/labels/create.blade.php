@@ -6,7 +6,7 @@
         {{ html()->modelForm($label, 'POST', route('labels.store'))->open() }}
         @include('labels.form')
         <div class="flex flex-col">
-            @can('store-label')
+            @can('store', App\Models\Label::class)
             <div class="mt-2">
                 {{ html()->submit('Создать')->class(['bg-blue-500', 'hover:bg-blue-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded' => true]) }}
             </div>

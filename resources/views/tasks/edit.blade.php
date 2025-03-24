@@ -7,7 +7,7 @@
         {{ html()->modelForm($task, 'PATCH', route('tasks.update', $task->id))->open() }}
         @include('tasks.form')
         <div class="flex flex-col">
-            @can('update-task')
+            @can('update', $task)
             <div class="mt-2">
                 {{ html()->submit('Обновить')->class(['bg-blue-500', 'hover:bg-blue-700', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded' => true]) }}
             </div>
