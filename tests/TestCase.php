@@ -22,7 +22,6 @@ abstract class TestCase extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        // $this->runDatabaseMigrations();
         $this->user = User::factory()->create();
         $this->status = TaskStatus::factory()->create();
         $this->task = Task::factory()->create();
