@@ -18,6 +18,7 @@ return [
 
     'default' => env('DB_CONNECTION', 'pgsql'),
 
+
     /*
     |--------------------------------------------------------------------------
     | Database Connections
@@ -97,6 +98,12 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'testing' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
@@ -124,11 +131,12 @@ return [
     | the migrations on disk haven't actually been run on the database.
     |
     */
-
+    /*
     'migrations' => [
         'table' => 'migrations',
         'update_date_on_publish' => true,
-    ],
+    ],*/
+    'migrations' => 'migrations',
 
     /*
     |--------------------------------------------------------------------------
