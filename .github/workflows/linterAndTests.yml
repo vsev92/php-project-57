@@ -23,6 +23,6 @@ jobs:
         # Install project
       - run: composer update
              make install
-     
+             cp .env.example .env
       - run: make lint 
       - run: make test
