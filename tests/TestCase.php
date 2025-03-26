@@ -13,7 +13,6 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
 
-    protected $connectionsToTruncate = ['sqlite'];
     protected User $user;
     protected TaskStatus $status;
     protected Task $task;
