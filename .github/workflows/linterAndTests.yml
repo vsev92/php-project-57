@@ -12,10 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup PHP
-        # Action gives to setup the PHP environment to test application
-        # https://github.com/shivammathur/setup-php
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
@@ -24,5 +21,6 @@ jobs:
       - run: composer update
       - run: make install
       - run: cp .env.example .env
+      - run: make start 
       - run: make lint 
       - run: make test
