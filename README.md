@@ -1,19 +1,18 @@
 [![hexlet-check](https://github.com/vsev92/php-project-57/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/vsev92/php-project-57/actions/workflows/hexlet-check.yml)
 
-[![linter](https://github.com/vsev92/php-project-57/actions/workflows/linter.yml/badge.svg)](https://github.com/vsev92/php-project-57/actions/workflows/linter.yml)
+[![linter](https://github.com/vsev92/php-project-57/actions/workflows/linterAndTests.yml/badge.svg)](https://github.com/vsev92/php-project-57/actions/workflows/linterAndTests.yml)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/d2025ca199014e093771/maintainability)](https://codeclimate.com/github/vsev92/php-project-57/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d2025ca199014e093771/test_coverage)](https://codeclimate.com/github/vsev92/php-project-57/test_coverage)
 
-##link to deployed task manager:
-https://php-project-57-10vm.onrender.com/
-
 ## Simple task manager
 Web service for planning and setting work tasks
 
-## Prerequisites
+## Link to production:
+https://php-project-57-10vm.onrender.com/
 
+## Prerequisites
 * Linux
 * PHP >=8.3
 * Composer
