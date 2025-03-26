@@ -21,6 +21,5 @@ jobs:
       - run: composer update
       - run: make install
       - run: cp .env.example .env
-             make start 
       - run: make lint 
       - run: make test
